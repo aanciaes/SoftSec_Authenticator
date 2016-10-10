@@ -45,7 +45,7 @@ public class Login extends HttpServlet {
 			// Step 1: Create a database "Connection" object
 			// For MySQL
 			conn = DriverManager.getConnection(
-					"jdbc:sqlite:/home/miguel/sqliteDatabases/autheticator.db");  // <<== Check
+					"jdbc:sqlite:/home/miguel/java-workspace/SoftSec_Authenticator/authenticator.db");  // <<== Check
 			// For MS Access
 			// conn = DriverManager.getConnection("jdbc:odbc:ebookshopODBC");
 
