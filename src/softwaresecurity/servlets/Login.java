@@ -49,10 +49,10 @@ public class Login extends HttpServlet {
 			HttpSession session = request.getSession(true);
 			session.setAttribute("USER", authUser.getAccountName());
 			session.setAttribute("PWD", authUser.getPassword());
-			
+
 			//redirect to home page
 			response.sendRedirect("http://localhost:8080/SoftSec_Authenticator/home.html");
-			
+
 		} catch (UndefinedAccountException | AccountLockedException | AuthenticationError ex) {
 			out.println("<html><head><title>LoginError</title></head><body><p>Login Failed</p>"
 					+ "<button class='btn btn-success' "
