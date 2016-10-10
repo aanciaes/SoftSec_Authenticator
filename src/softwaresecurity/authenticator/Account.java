@@ -7,7 +7,7 @@ public class Account{
 	boolean logged_in;
 	boolean locked_in;
 
-	private Account (String username, String pwd){
+	public Account (String username, String pwd){
 		this.username = username;
 		this.pwd = pwd;
 		locked_in = false;

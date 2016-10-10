@@ -8,7 +8,9 @@
 	<div class="container">
 		<div class="row">
 			<div class="span12">
-				<form class="form-horizontal" action='http://localhost:8080/SoftSec_Authenticator/Login' method="POST">
+				<form class="form-horizontal" id="login"
+					action='http://localhost:8080/SoftSec_Authenticator/login'
+					method="POST">
 					<fieldset>
 						<div id="legend">
 							<legend class="">Login</legend>
@@ -17,8 +19,8 @@
 							<!-- Username -->
 							<label class="control-label" for="username">Username</label>
 							<div class="controls">
-								<input type="text" id="username" name="username" placeholder="username"
-									class="input-xlarge">
+								<input type="text" id="username" name="username"
+									placeholder="username" class="input-xlarge" required>
 							</div>
 						</div>
 						<div class="control-group">
@@ -26,7 +28,7 @@
 							<label class="control-label" for="password">Password</label>
 							<div class="controls">
 								<input type="password" id="password" name="password"
-									placeholder="password" class="input-xlarge">
+									placeholder="password" class="input-xlarge" required>
 							</div>
 						</div>
 						<div class="control-group">
