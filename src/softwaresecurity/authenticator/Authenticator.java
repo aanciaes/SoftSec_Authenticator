@@ -43,20 +43,126 @@ public class Authenticator implements AuthenticatorInterface{
 	}
 
 	@Override
-	public void deleteAccount(String name) {
-		// TODO Auto-generated method stub
+	public int deleteAccount(String name) throws UndefinedAccountException, AccountLockedException{
+		Connection conn = null;
+		Statement stmt = null;
+		try {
+			// Step 1: Create a database "Connection" object
+			// For SqLite3
+			conn = connectDB();
 
+			// Step 2: Create a "Statement" object inside the "Connection"
+			stmt = conn.createStatement();
+
+				// Step 3: Execute a SQL SELECT query
+			String sqlStr = "SELECT isLocked FROM logins WHERE username = "
+					+ "'" + name + "';";
+				stmt.executeUpdate(sqlStr);
+			ResultSet rset = stmt.executeQuery(sqlStr); // Send the query to the server
+			if(rset.isClosed()){
+				throw new UndefinedAccountException();
+			}else{
+				// Step 4: Process the query result
+				boolean isLocked = rset.getBoolean("isLocked");
+				if(!isLocked){
+					return 0;
+				}else{
+					String sqlStr2 = "delete FROM logins WHERE username = "
+							+ "'" + name + "';";
+					stmt.executeUpdate(sqlStr2);
+
+					return 1;
+
+				}
+			}
+		}catch (SQLException ex) {
+			ex.printStackTrace();
+		} finally {
+			try {
+				// Step 5: Close the Statement and Connection
+				if (stmt != null) stmt.close();
+				if (conn != null) conn.close();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		}
+		return 0;
 	}
 
 	@Override
 	public Account get_account(String name) {
-		// TODO Auto-generated method stub
+		Connection conn = null;
+		Statement stmt = null;
+
+		try{
+			// Step 1: Create a database "Connection" object
+			// For SqLite3
+			conn = connectDB();
+
+			// Step 2: Create a "Statement" object inside the "Connection"
+			stmt = conn.createStatement();
+
+			String sqlStr = "SELECT * FROM logins WHERE username = "
+					+ "'" + name + "';";
+
+			ResultSet rset = stmt.executeQuery(sqlStr); // Send the query to the server
+			if(rset.isClosed()){
+				return null;
+			}
+			else
+				return new Account(rset.getString("username"), rset.getString("password"));
+
+		}
+		catch (SQLException ex) {
+		ex.printStackTrace();
+	} finally {
+		try {
+			// Step 5: Close the Statement and Connection
+			if (stmt != null) stmt.close();
+			if (conn != null) conn.close();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+	}
 		return null;
 	}
 
 	@Override
-	public void change_pwd(String name, String pwd1, String pwd2) {
-		// TODO Auto-generated method stub
+	public void change_pwd(String name, String pwd1, String pwd2) throws UndefinedAccountException {
+		Connection conn = null;
+		Statement stmt = null;
+		try {
+			// Step 1: Create a database "Connection" object
+			// For SqLite3
+			conn = connectDB();
+
+			// Step 2: Create a "Statement" object inside the "Connection"
+			stmt = conn.createStatement();
+
+			String sqlStr = "SELECT * FROM logins WHERE username = "
+					+ "'" + name + "';";
+
+			ResultSet rset = stmt.executeQuery(sqlStr); // Send the query to the server
+			if(rset.isClosed()){
+				throw new UndefinedAccountException();
+			}
+			else
+			if(pwd1.equals(pwd2)){
+				// Step 3: Execute a SQL SELECT query
+				sqlStr = "UPDATE logins set password = '" + pwd1+ "' WHERE username = '" + name + "');";
+				stmt.executeUpdate(sqlStr);
+			}
+		}catch (SQLException ex) {
+			ex.printStackTrace();
+		} finally {
+			try {
+				// Step 5: Close the Statement and Connection
+				if (stmt != null) stmt.close();
+				if (conn != null) conn.close();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		}
 
 	}
 

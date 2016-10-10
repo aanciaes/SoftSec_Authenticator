@@ -21,7 +21,7 @@ public interface AuthenticatorInterface {
 	 * @pre The account must be locked
 	 * @pre The account cannot be logged in
 	 */
-	void deleteAccount (String name);
+	int deleteAccount (String name) throws UndefinedAccountException, AccountLockedException;
 	
 	/**
 	 * Returns a clone (readonly) of an existing account object
@@ -38,7 +38,7 @@ public interface AuthenticatorInterface {
 	 * @pre name must identify an created account
 	 * @pre pwd1 == pwd2
 	 */
-	void change_pwd (String name, String pwd1, String pwd2);
+	void change_pwd (String name, String pwd1, String pwd2) throws UndefinedAccountException;
 	
 	/**
 	 * Authenticates the caller, given name and password
