@@ -38,7 +38,6 @@ public interface AccountInterface {
 	 */
 	boolean isLoggedIn ();
 	
-	
 	/**
 	 * Returns true if the account is currently locked
 	 * @return true if the account is currently locked
