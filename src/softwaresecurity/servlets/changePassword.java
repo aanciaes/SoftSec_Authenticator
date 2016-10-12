@@ -12,7 +12,6 @@ import javax.servlet.http.HttpSession;
 import exceptions.AccountLockedException;
 import exceptions.AuthenticationError;
 import exceptions.UndefinedAccountException;
-import softwaresecurity.authenticator.Account;
 import softwaresecurity.authenticator.Authenticator;
 import softwaresecurity.authenticator.AuthenticatorInterface;
 /**
@@ -20,10 +19,7 @@ import softwaresecurity.authenticator.AuthenticatorInterface;
  */
 
 
-/*
-
-    FALTA TESTAR
- */
+@WebServlet("/changepwd")
 public class changePassword extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -45,18 +41,14 @@ public class changePassword extends HttpServlet {
         AuthenticatorInterface authenticator = new Authenticator();
         try{
             //login
-            int result = authenticator.change_pwd(request.getParameter("username"), request.getParameter("password1"), request.getParameter("password2"));
-            //Create HTTP session and set attributes of logged user
-            HttpSession session = request.getSession(true);
-
+            authenticator.change_pwd(request.getParameter("username"), request.getParameter("password1"), request.getParameter("password2"));
             //redirect to home page
             response.sendRedirect("http://localhost:8080/SoftSec_Authenticator/home.html");
 
-
-        } catch (UndefinedAccountException | AccountLockedException | AuthenticationError ex) {
-            out.println("<html><head><title>LoginError</title></head><body><p>Login Failed</p>"
+        } catch (UndefinedAccountException ex) {
+            out.println("<html><head><title>LoginError</title></head><body><p>Something went wrong</p><b><p>Password Not Changed</p>"
                     + "<button class='btn btn-success' "
-                    + "onclick=\"location.href = 'http://localhost:8080/SoftSec_Authenticator/login.html';\">Go Back</button>"
+                    + "onclick=\"location.href = 'http://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
                     + "</body></html>");
         } finally {
             out.close();
