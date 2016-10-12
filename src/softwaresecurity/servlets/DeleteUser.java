@@ -1,12 +1,5 @@
 package softwaresecurity.servlets;
 
-import exceptions.AccountLockedException;
-import exceptions.AuthenticationError;
-import exceptions.UndefinedAccountException;
-import softwaresecurity.authenticator.Account;
-import softwaresecurity.authenticator.Authenticator;
-import softwaresecurity.authenticator.AuthenticatorInterface;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -16,6 +9,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import exceptions.AccountLockedException;
+import exceptions.AuthenticationError;
+import exceptions.UndefinedAccountException;
+import softwaresecurity.authenticator.Authenticator;
+import softwaresecurity.authenticator.AuthenticatorInterface;
 /**
  * Created by MigMg on 10/10/2016.
  */
@@ -26,10 +25,11 @@ import javax.servlet.http.HttpSession;
 
  */
 @WebServlet("/deleteuser")
-public class DeleteUser extends HTTPServlet {
+public class DeleteUser extends HttpServlet {
 
+	private static final long serialVersionUID = 1L;
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         // Set the MIME type for the response message
         response.setContentType("text/html");
@@ -43,7 +43,7 @@ public class DeleteUser extends HTTPServlet {
             //login
 
             String authUser = session.getAttribute("USER").toString();
-            if(!authUser.equals(ROOT)){
+            if(!authUser.equals("ROOT")){
                 ;
             }
             else{
@@ -58,7 +58,7 @@ public class DeleteUser extends HTTPServlet {
 
                 }
             }
-        } catch (UndefinedAccountException | AccountLockedException | AuthenticationError ex) {
+        } catch (UndefinedAccountException | AccountLockedException ex) {
             out.println("<html><head><title>LoginError</title></head><body><p>Login Failed</p>"
                     + "<button class='btn btn-success' "
                     + "onclick=\"location.href = 'http://localhost:8080/SoftSec_Authenticator/login.html';\">Go Back</button>"
