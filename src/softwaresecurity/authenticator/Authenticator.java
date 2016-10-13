@@ -9,13 +9,15 @@ import java.sql.Statement;
 import exceptions.AccountLockedException;
 import exceptions.AuthenticationError;
 import exceptions.UndefinedAccountException;
+import exceptions.UsernameAlreadyExistsException;
 
 public class Authenticator implements AuthenticatorInterface{
 
 	@Override
-	public void create_account(String name, String pwd1, String pwd2) {
+	public void create_account(String name, String pwd1, String pwd2) throws UsernameAlreadyExistsException {
 		Connection conn = null;
 		Statement stmt = null;
+		name = name.toLowerCase();
 		try {
 			// Step 1: Create a database "Connection" object
 			// For SqLite3
@@ -23,11 +25,22 @@ public class Authenticator implements AuthenticatorInterface{
 
 			// Step 2: Create a "Statement" object inside the "Connection"
 			stmt = conn.createStatement();
-
-			if(pwd1.equals(pwd2)){
-				// Step 3: Execute a SQL SELECT query
-				String sqlStr = "INSERT INTO logins (username, password) values ( '" + name + "','" + pwd1 + "');";
+			
+			// Step 3: Execute a SQL SELECT query
+			String sqlStr = "SELECT username FROM logins WHERE username = "
+					+ "'" + name + "';";
 				stmt.executeUpdate(sqlStr);
+			ResultSet rset = stmt.executeQuery(sqlStr); // Send the query to the server
+			
+			if(!rset.isClosed()){
+				throw new UsernameAlreadyExistsException();
+			}
+			
+			else
+				if(pwd1.equals(pwd2)){
+					// Step 3: Execute a SQL SELECT query
+					String sqlStr2 = "INSERT INTO logins (username, password) values ( '" + name + "','" + pwd1 + "');";
+					stmt.executeUpdate(sqlStr2);
 			}
 		}catch (SQLException ex) {
 			ex.printStackTrace();
@@ -43,9 +56,10 @@ public class Authenticator implements AuthenticatorInterface{
 	}
 
 	@Override
-	public int deleteAccount(String name) throws UndefinedAccountException, AccountLockedException{
+	public void deleteAccount(String name) throws UndefinedAccountException, AccountLockedException{
 		Connection conn = null;
 		Statement stmt = null;
+		name = name.toLowerCase();
 		try {
 			// Step 1: Create a database "Connection" object
 			// For SqLite3
@@ -65,13 +79,11 @@ public class Authenticator implements AuthenticatorInterface{
 				// Step 4: Process the query result
 				boolean isLocked = rset.getBoolean("isLocked");
 				if(!isLocked){
-					return 0;
+					throw new AccountLockedException();
 				}else{
 					String sqlStr2 = "delete FROM logins WHERE username = "
 							+ "'" + name + "';";
 					stmt.executeUpdate(sqlStr2);
-
-					return 1;
 
 				}
 			}
@@ -86,14 +98,13 @@ public class Authenticator implements AuthenticatorInterface{
 				ex.printStackTrace();
 			}
 		}
-		return 0;
 	}
 
 	@Override
 	public Account get_account(String name) {
 		Connection conn = null;
 		Statement stmt = null;
-
+		name = name.toLowerCase();
 		try{
 			// Step 1: Create a database "Connection" object
 			// For SqLite3
@@ -131,6 +142,7 @@ public class Authenticator implements AuthenticatorInterface{
 	public void change_pwd(String name, String pwd1, String pwd2) throws UndefinedAccountException {
 		Connection conn = null;
 		Statement stmt = null;
+		name = name.toLowerCase();
 		try {
 			// Step 1: Create a database "Connection" object
 			// For SqLite3
@@ -171,6 +183,7 @@ public class Authenticator implements AuthenticatorInterface{
 			throws UndefinedAccountException, AccountLockedException, AuthenticationError {
 		Connection conn = null;
 		Statement stmt = null;
+		name = name.toLowerCase();
 		try {
 			// Step 1: Create a database "Connection" object
 			// For SqLite3
@@ -216,7 +229,6 @@ public class Authenticator implements AuthenticatorInterface{
 	@Override
 	public void logout(Account a) {
 		// TODO Auto-generated method stub
-
 	}
 
 	/**

@@ -2,7 +2,9 @@ package softwaresecurity.authenticator;
 
 import exceptions.AccountLockedException;
 import exceptions.AuthenticationError;
+import exceptions.PasswordsDontMatchException;
 import exceptions.UndefinedAccountException;
+import exceptions.UsernameAlreadyExistsException;
 
 public interface AuthenticatorInterface {
 	
@@ -13,7 +15,7 @@ public interface AuthenticatorInterface {
 	 * @param pwd2 the password
 	 * @pre pwd1 == pwd2
 	 */
-	void create_account (String name, String pwd1, String pwd2);
+	void create_account (String name, String pwd1, String pwd2) throws UsernameAlreadyExistsException;
 	
 	/**
 	 * Deletes an exiting account
@@ -21,7 +23,7 @@ public interface AuthenticatorInterface {
 	 * @pre The account must be locked
 	 * @pre The account cannot be logged in
 	 */
-	int deleteAccount (String name) throws UndefinedAccountException, AccountLockedException;
+	void deleteAccount (String name) throws UndefinedAccountException, AccountLockedException;
 	
 	/**
 	 * Returns a clone (readonly) of an existing account object
@@ -38,7 +40,7 @@ public interface AuthenticatorInterface {
 	 * @pre name must identify an created account
 	 * @pre pwd1 == pwd2
 	 */
-	void change_pwd (String name, String pwd1, String pwd2) throws UndefinedAccountException;
+	void change_pwd (String name, String pwd1, String pwd2) throws UndefinedAccountException, PasswordsDontMatchException;
 	
 	/**
 	 * Authenticates the caller, given name and password

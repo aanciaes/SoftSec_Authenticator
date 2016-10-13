@@ -41,12 +41,16 @@ public class changePassword extends HttpServlet {
         AuthenticatorInterface authenticator = new Authenticator();
         try{
             //login
-            authenticator.change_pwd(request.getParameter("username"), request.getParameter("password1"), request.getParameter("password2"));
+            authenticator.change_pwd(request.getParameter("name"), request.getParameter("password1"), request.getParameter("password2"));
             //redirect to home page
             response.sendRedirect("http://localhost:8080/SoftSec_Authenticator/home.html");
-
-        } catch (UndefinedAccountException ex) {
-            out.println("<html><head><title>LoginError</title></head><body><p>Something went wrong</p><b><p>Password Not Changed</p>"
+        }   
+         catch(PasswordsDontMatchException ex){
+        	 
+         }
+        
+         catch (UndefinedAccountException ex) {
+            out.println("<html><head><title>LoginError</title></head><body><p>Something went wrong</p><b><p>Username doesn't exist</p>"
                     + "<button class='btn btn-success' "
                     + "onclick=\"location.href = 'http://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
                     + "</body></html>");

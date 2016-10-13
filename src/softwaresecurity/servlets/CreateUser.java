@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import exceptions.UsernameAlreadyExistsException;
 import softwaresecurity.authenticator.Authenticator;
 import softwaresecurity.authenticator.AuthenticatorInterface;
 
@@ -36,15 +37,15 @@ public class CreateUser extends HttpServlet {
 
 		//Check if an user is authenticated
 		HttpSession session = request.getSession(true);
+		// Set the MIME type for the response message
+		response.setContentType("text/html");
+		// Get a output writer to write the response message into the network socket
+		PrintWriter out = response.getWriter();
 		try{
 			String authUser = session.getAttribute("USER").toString();
-			// Set the MIME type for the response message
-			response.setContentType("text/html");
-			// Get a output writer to write the response message into the network socket
-			PrintWriter out = response.getWriter();
 			AuthenticatorInterface authenticator = new Authenticator();
 			if(!authUser.equals(ROOT)){
-				out.println("<html><head><title>LoginError</title></head><body><p><h1>You are not authorized to do this operation" + session.getAttribute("USER") + "</h1></p>"
+				out.println("<html><head><title>LoginError</title></head><body><p><h1>You are not authorized to do this operation</h1></p>"
 						+ "<button class='btn btn-success' "
 						+ "onclick=\"location.href = 'http://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
 						+ "</body></html>");
@@ -52,8 +53,21 @@ public class CreateUser extends HttpServlet {
 				authenticator.create_account(request.getParameter("firstnamesignup"), 
 						request.getParameter("passwordsignup"), request.getParameter("passwordsignup_confirm"));
 			}
+		}catch (NullPointerException e){
+			out.println("<html><head><title>LoginError</title></head><body><p><h1>You are not authorized to do this operation</h1></p>"
+					+ "<button class='btn btn-success' "
+					+ "onclick=\"location.href = 'http://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
+					+ "</body></html>");
+		}catch (UsernameAlreadyExistsException e){
+			out.println("<html><head><title>LoginError</title></head><body><p><h1>Username Already In Use</h1></p>"
+					+ "<button class='btn btn-success' "
+					+ "onclick=\"location.href = 'http://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
+					+ "</body></html>");
 		}catch(Exception e){
-			response.sendRedirect("http://localhost:8080/SoftSec_Authenticator/login.html");
+			out.println("<html><head><title>LoginError</title></head><body><p><h1>Somethin went wrong. Please try again</h1></p>"
+					+ "<button class='btn btn-success' "
+					+ "onclick=\"location.href = 'http://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
+					+ "</body></html>");
 		}
 	}
 
