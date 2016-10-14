@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import exceptions.AccountLockedException;
 import exceptions.AuthenticationError;
-import exceptions.UndefinedAccountException;
+import exceptions.*;
 import softwaresecurity.authenticator.Authenticator;
 import softwaresecurity.authenticator.AuthenticatorInterface;
 /**
@@ -33,6 +33,7 @@ public class changePassword extends HttpServlet {
 
 
 
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Set the MIME type for the response message
         response.setContentType("text/html");
@@ -46,11 +47,14 @@ public class changePassword extends HttpServlet {
             response.sendRedirect("http://localhost:8080/SoftSec_Authenticator/home.html");
         }   
          catch(PasswordsDontMatchException ex){
-        	 
+        	 out.println("<html><head><title>LoginError</title></head><body><p>The passwords don't match</p><b><p>Username doesn't exist</p>"
+                     + "<button class='btn btn-success' "
+                     + "onclick=\"location.href = 'http://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
+                     + "</body></html>");
          }
         
          catch (UndefinedAccountException ex) {
-            out.println("<html><head><title>LoginError</title></head><body><p>Something went wrong</p><b><p>Username doesn't exist</p>"
+            out.println("<html><head><title>LoginError</title></head><body><p>That account doesn't exist</p><b><p>Username doesn't exist</p>"
                     + "<button class='btn btn-success' "
                     + "onclick=\"location.href = 'http://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
                     + "</body></html>");
