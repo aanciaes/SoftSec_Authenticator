@@ -8,6 +8,7 @@ import java.sql.Statement;
 
 import exceptions.AccountLockedException;
 import exceptions.AuthenticationError;
+import exceptions.PasswordsDontMatchException;
 import exceptions.UndefinedAccountException;
 import exceptions.UsernameAlreadyExistsException;
 
@@ -139,7 +140,7 @@ public class Authenticator implements AuthenticatorInterface{
 	}
 
 	@Override
-	public void change_pwd(String name, String pwd1, String pwd2) throws UndefinedAccountException {
+	public void change_pwd(String name, String pwd1, String pwd2) throws UndefinedAccountException, PasswordsDontMatchException {
 		Connection conn = null;
 		Statement stmt = null;
 		name = name.toLowerCase();
@@ -164,6 +165,8 @@ public class Authenticator implements AuthenticatorInterface{
 				sqlStr = "UPDATE logins set password = '" + pwd1+ "' WHERE username = '" + name + "');";
 				stmt.executeUpdate(sqlStr);
 			}
+			else
+				throw new PasswordsDontMatchException();
 		}catch (SQLException ex) {
 			ex.printStackTrace();
 		} finally {
