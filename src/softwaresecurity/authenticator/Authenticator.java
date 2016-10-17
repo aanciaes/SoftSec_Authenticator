@@ -162,7 +162,7 @@ public class Authenticator implements AuthenticatorInterface{
 			else
 			if(pwd1.equals(pwd2)){
 				// Step 3: Execute a SQL SELECT query
-				sqlStr = "UPDATE logins set password = '" + pwd1+ "' WHERE username = '" + name + "');";
+				sqlStr = "UPDATE logins set password = '" + pwd1+ "' WHERE username = '" + name + "';";
 				stmt.executeUpdate(sqlStr);
 			}
 			else

@@ -20,13 +20,13 @@ import softwaresecurity.authenticator.AuthenticatorInterface;
 
 
 @WebServlet("/changepwd")
-public class changePassword extends HttpServlet {
+public class ChangePassword extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public changePassword() {
+    public ChangePassword() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -40,14 +40,16 @@ public class changePassword extends HttpServlet {
         // Get a output writer to write the response message into the network socket
         PrintWriter out = response.getWriter();
         AuthenticatorInterface authenticator = new Authenticator();
+        HttpSession session = request.getSession(true);
+
         try{
             //login
-            authenticator.change_pwd(request.getParameter("name"), request.getParameter("password1"), request.getParameter("password2"));
+            authenticator.change_pwd(session.getAttribute("USER").toString(), request.getParameter("password1"), request.getParameter("password2"));
             //redirect to home page
             response.sendRedirect("http://localhost:8080/SoftSec_Authenticator/home.html");
         }   
          catch(PasswordsDontMatchException ex){
-        	 out.println("<html><head><title>LoginError</title></head><body><p>The passwords don't match</p><b><p>Username doesn't exist</p>"
+        	 out.println("<html><head><title>LoginError</title></head><body><p>The passwords don't match</p><b><p>Password's don't exist</p>"
                      + "<button class='btn btn-success' "
                      + "onclick=\"location.href = 'http://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
                      + "</body></html>");
