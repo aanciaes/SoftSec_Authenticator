@@ -51,12 +51,12 @@ public class Login extends HttpServlet {
 			session.setAttribute("PWD", authUser.getPassword());
 
 			//redirect to home page
-			response.sendRedirect("http://localhost:8080/SoftSec_Authenticator/home.html");
+			response.sendRedirect("https://localhost:8080/SoftSec_Authenticator/home.html");
 
 		} catch (UndefinedAccountException | AccountLockedException | AuthenticationError ex) {
 			out.println("<html><head><title>LoginError</title></head><body><p>Login Failed</p>"
 					+ "<button class='btn btn-success' "
-					+ "onclick=\"location.href = 'http://localhost:8080/SoftSec_Authenticator/login.html';\">Go Back</button>"
+					+ "onclick=\"location.href = 'https://localhost:8080/SoftSec_Authenticator/login.html';\">Go Back</button>"
 					+ "</body></html>");
 		} finally {
 			out.close();

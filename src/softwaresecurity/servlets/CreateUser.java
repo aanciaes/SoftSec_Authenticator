@@ -47,7 +47,7 @@ public class CreateUser extends HttpServlet {
 			if(!authUser.equals(ROOT)){
 				out.println("<html><head><title>LoginError</title></head><body><p><h1>You are not authorized to do this operation</h1></p>"
 						+ "<button class='btn btn-success' "
-						+ "onclick=\"location.href = 'http://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
+						+ "onclick=\"location.href = 'https://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
 						+ "</body></html>");
 			}else{
 				authenticator.create_account(request.getParameter("firstnamesignup"), 
@@ -56,17 +56,17 @@ public class CreateUser extends HttpServlet {
 		}catch (NullPointerException e){
 			out.println("<html><head><title>LoginError</title></head><body><p><h1>You are not authorized to do this operation</h1></p>"
 					+ "<button class='btn btn-success' "
-					+ "onclick=\"location.href = 'http://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
+					+ "onclick=\"location.href = 'https://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
 					+ "</body></html>");
 		}catch (UsernameAlreadyExistsException e){
 			out.println("<html><head><title>LoginError</title></head><body><p><h1>Username Already In Use</h1></p>"
 					+ "<button class='btn btn-success' "
-					+ "onclick=\"location.href = 'http://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
+					+ "onclick=\"location.href = 'https://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
 					+ "</body></html>");
 		}catch(Exception e){
 			out.println("<html><head><title>LoginError</title></head><body><p><h1>Somethin went wrong. Please try again</h1></p>"
 					+ "<button class='btn btn-success' "
-					+ "onclick=\"location.href = 'http://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
+					+ "onclick=\"location.href = 'https://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
 					+ "</body></html>");
 		}
 	}

@@ -47,25 +47,25 @@ public class DeleteUser extends HttpServlet {
             if(authUser.equals(name)){
             	out.println("<html><head><title>LoginError</title></head><body><p><h1>You can't be logged in to delete this account</h1></p>"
     					+ "<button class='btn btn-success' "
-    					+ "onclick=\"location.href = 'http://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
+    					+ "onclick=\"location.href = 'https://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
     					+ "</body></html>");
             }
             else{
                 authenticator.deleteAccount(request.getParameter("firstnamesignup"));
-    			response.sendRedirect("http://localhost:8080/SoftSec_Authenticator/home.html");
+    			response.sendRedirect("https://localhost:8080/SoftSec_Authenticator/home.html");
                 	
             }
         } catch (UndefinedAccountException ex) {
             out.println("<html><head><title>LoginError</title></head><body><p>This account doesn't exist</p>"
                     + "<button class='btn btn-success' "
-                    + "onclick=\"location.href = 'http://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
+                    + "onclick=\"location.href = 'https://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
                     + "</body></html>");
         }
         
         catch (AccountLockedException ex) {
             out.println("<html><head><title>LoginError</title></head><body><p>This account isn't locked. It should be locked if you want to delete it.</p>"
                     + "<button class='btn btn-success' "
-                    + "onclick=\"location.href = 'http://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
+                    + "onclick=\"location.href = 'https://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
                     + "</body></html>");
         }
         

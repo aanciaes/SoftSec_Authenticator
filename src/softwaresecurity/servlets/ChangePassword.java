@@ -46,19 +46,19 @@ public class ChangePassword extends HttpServlet {
             //login
             authenticator.change_pwd(session.getAttribute("USER").toString(), request.getParameter("password1"), request.getParameter("password2"));
             //redirect to home page
-            response.sendRedirect("http://localhost:8080/SoftSec_Authenticator/home.html");
+            response.sendRedirect("https://localhost:8080/SoftSec_Authenticator/home.html");
         }   
          catch(PasswordsDontMatchException ex){
         	 out.println("<html><head><title>LoginError</title></head><body><p>The passwords don't match</p><b><p>Password's don't exist</p>"
                      + "<button class='btn btn-success' "
-                     + "onclick=\"location.href = 'http://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
+                     + "onclick=\"location.href = 'https://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
                      + "</body></html>");
          }
         
          catch (UndefinedAccountException ex) {
             out.println("<html><head><title>LoginError</title></head><body><p>That account doesn't exist</p><b><p>Username doesn't exist</p>"
                     + "<button class='btn btn-success' "
-                    + "onclick=\"location.href = 'http://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
+                    + "onclick=\"location.href = 'https://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
                     + "</body></html>");
         } finally {
             out.close();

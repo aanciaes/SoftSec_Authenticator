@@ -30,7 +30,7 @@ public class Logout extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		if (session != null) session.invalidate();
-		response.sendRedirect("http://localhost:8080/SoftSec_Authenticator/login.html");
+		response.sendRedirect("https://localhost:8080/SoftSec_Authenticator/login.html");
 	
 	}
 
