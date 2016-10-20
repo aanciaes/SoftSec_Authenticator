@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import exceptions.UsernameAlreadyExistsException;
 import softwaresecurity.authenticator.Authenticator;
 import softwaresecurity.authenticator.AuthenticatorInterface;
+import softwaresecurity.encryptionAlgorithm.AESencrp;
 
 /**
  * Servlet implementation class CreateUser
@@ -47,26 +48,30 @@ public class CreateUser extends HttpServlet {
 			if(!authUser.equals(ROOT)){
 				out.println("<html><head><title>LoginError</title></head><body><p><h1>You are not authorized to do this operation</h1></p>"
 						+ "<button class='btn btn-success' "
-						+ "onclick=\"location.href = 'https://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
+						+ "onclick=\"location.href = 'https://localhost:8443/SoftSec_Authenticator/home.html';\">Go Back</button>"
 						+ "</body></html>");
 			}else{
+				AESencrp enc = new AESencrp();
+				String pwd = enc.encrypt(request.getParameter("passwordsignup"));
+				String pwdConfirm = enc.encrypt(request.getParameter("passwordsignup_confirm"));
+				
 				authenticator.create_account(request.getParameter("firstnamesignup"), 
-						request.getParameter("passwordsignup"), request.getParameter("passwordsignup_confirm"));
+						pwd, pwdConfirm);
 			}
 		}catch (NullPointerException e){
 			out.println("<html><head><title>LoginError</title></head><body><p><h1>You are not authorized to do this operation</h1></p>"
 					+ "<button class='btn btn-success' "
-					+ "onclick=\"location.href = 'https://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
+					+ "onclick=\"location.href = 'https://localhost:8443/SoftSec_Authenticator/home.html';\">Go Back</button>"
 					+ "</body></html>");
 		}catch (UsernameAlreadyExistsException e){
 			out.println("<html><head><title>LoginError</title></head><body><p><h1>Username Already In Use</h1></p>"
 					+ "<button class='btn btn-success' "
-					+ "onclick=\"location.href = 'https://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
+					+ "onclick=\"location.href = 'https://localhost:8443/SoftSec_Authenticator/home.html';\">Go Back</button>"
 					+ "</body></html>");
 		}catch(Exception e){
 			out.println("<html><head><title>LoginError</title></head><body><p><h1>Somethin went wrong. Please try again</h1></p>"
 					+ "<button class='btn btn-success' "
-					+ "onclick=\"location.href = 'https://localhost:8080/SoftSec_Authenticator/home.html';\">Go Back</button>"
+					+ "onclick=\"location.href = 'https://localhost:8443/SoftSec_Authenticator/home.html';\">Go Back</button>"
 					+ "</body></html>");
 		}
 	}
