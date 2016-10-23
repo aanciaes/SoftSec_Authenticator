@@ -2,6 +2,7 @@ package softwaresecurity.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.Principal;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.apache.catalina.realm.GenericPrincipal;
 
 import exceptions.UsernameAlreadyExistsException;
 import softwaresecurity.authenticator.Authenticator;
@@ -36,42 +39,39 @@ public class CreateUser extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		//Check if an user is authenticated
-		HttpSession session = request.getSession(true);
 		// Set the MIME type for the response message
 		response.setContentType("text/html");
 		// Get a output writer to write the response message into the network socket
 		PrintWriter out = response.getWriter();
 		try{
-			String authUser = session.getAttribute("USER").toString();
+
 			AuthenticatorInterface authenticator = new Authenticator();
-			if(!authUser.equals(ROOT)){
-				out.println("<html><head><title>LoginError</title></head><body><p><h1>You are not authorized to do this operation</h1></p>"
-						+ "<button class='btn btn-success' "
-						+ "onclick=\"location.href = 'https://localhost:8443/SoftSec_Authenticator/home.html';\">Go Back</button>"
-						+ "</body></html>");
-			}else{
-				AESencrp enc = new AESencrp();
-				String pwd = enc.encrypt(request.getParameter("passwordsignup"));
-				String pwdConfirm = enc.encrypt(request.getParameter("passwordsignup_confirm"));
-				
-				authenticator.create_account(request.getParameter("firstnamesignup"), 
-						pwd, pwdConfirm);
-			}
-		}catch (NullPointerException e){
-			out.println("<html><head><title>LoginError</title></head><body><p><h1>You are not authorized to do this operation</h1></p>"
+
+			String pwd = AESencrp.encrypt(request.getParameter("passwordsignup"));
+			String pwdConfirm = AESencrp.encrypt(request.getParameter("passwordsignup_confirm"));
+
+			authenticator.create_account(request.getParameter("firstnamesignup"), 
+					pwd, pwdConfirm);
+
+			out.println("<html><head><title>User Created</title></head><body><p><h1>User was created successfully</h1></p>"
 					+ "<button class='btn btn-success' "
-					+ "onclick=\"location.href = 'https://localhost:8443/SoftSec_Authenticator/home.html';\">Go Back</button>"
+					+ "onclick=\"location.href = 'https://localhost:8443/SoftSec_Authenticator/';\">Go Back</button>"
+					+ "</body></html>");
+
+		}catch (NullPointerException e){
+			out.println("<html><head><title>Error on creating user</title></head><body><p><h1>You are not authorized to do this operation</h1></p>"
+					+ "<button class='btn btn-success' "
+					+ "onclick=\"location.href = 'https://localhost:8443/SoftSec_Authenticator/';\">Go Back</button>"
 					+ "</body></html>");
 		}catch (UsernameAlreadyExistsException e){
-			out.println("<html><head><title>LoginError</title></head><body><p><h1>Username Already In Use</h1></p>"
+			out.println("<html><head><title>Error on creating user</title></head><body><p><h1>Username Already In Use</h1></p>"
 					+ "<button class='btn btn-success' "
-					+ "onclick=\"location.href = 'https://localhost:8443/SoftSec_Authenticator/home.html';\">Go Back</button>"
+					+ "onclick=\"location.href = 'https://localhost:8443/SoftSec_Authenticator/';\">Go Back</button>"
 					+ "</body></html>");
 		}catch(Exception e){
-			out.println("<html><head><title>LoginError</title></head><body><p><h1>Somethin went wrong. Please try again</h1></p>"
+			out.println("<html><head><title>Error on creating user</title></head><body><p><h1>Somethin went wrong. Please try again</h1></p>"
 					+ "<button class='btn btn-success' "
-					+ "onclick=\"location.href = 'https://localhost:8443/SoftSec_Authenticator/home.html';\">Go Back</button>"
+					+ "onclick=\"location.href = 'https://localhost:8443/SoftSec_Authenticator/';\">Go Back</button>"
 					+ "</body></html>");
 		}
 	}

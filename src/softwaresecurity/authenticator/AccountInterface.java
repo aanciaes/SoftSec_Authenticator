@@ -1,5 +1,7 @@
 package softwaresecurity.authenticator;
 
+import exceptions.UndefinedAccountException;
+
 public interface AccountInterface {
 
 	/**

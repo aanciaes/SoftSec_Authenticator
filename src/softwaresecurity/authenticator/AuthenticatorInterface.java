@@ -58,4 +58,6 @@ public interface AuthenticatorInterface {
 	 */
 	void logout (Account a);
 
+	String getRole(String username) throws UndefinedAccountException;
+
 }

@@ -26,23 +26,23 @@ public class Authenticator implements AuthenticatorInterface{
 
 			// Step 2: Create a "Statement" object inside the "Connection"
 			stmt = conn.createStatement();
-			
+
 			// Step 3: Execute a SQL SELECT query
 			String sqlStr = "SELECT username FROM logins WHERE username = "
 					+ "'" + name + "';";
-				stmt.executeUpdate(sqlStr);
+			stmt.executeUpdate(sqlStr);
 			ResultSet rset = stmt.executeQuery(sqlStr); // Send the query to the server
-			
+
 			if(!rset.isClosed()){
 				throw new UsernameAlreadyExistsException();
 			}
-			
+
 			else
 				if(pwd1.equals(pwd2)){
 					// Step 3: Execute a SQL SELECT query
 					String sqlStr2 = "INSERT INTO logins (username, password) values ( '" + name + "','" + pwd1 + "');";
 					stmt.executeUpdate(sqlStr2);
-			}
+				}
 		}catch (SQLException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -69,10 +69,10 @@ public class Authenticator implements AuthenticatorInterface{
 			// Step 2: Create a "Statement" object inside the "Connection"
 			stmt = conn.createStatement();
 
-				// Step 3: Execute a SQL SELECT query
+			// Step 3: Execute a SQL SELECT query
 			String sqlStr = "SELECT isLocked FROM logins WHERE username = "
 					+ "'" + name + "';";
-				stmt.executeUpdate(sqlStr);
+			stmt.executeUpdate(sqlStr);
 			ResultSet rset = stmt.executeQuery(sqlStr); // Send the query to the server
 			if(rset.isClosed()){
 				throw new UndefinedAccountException();
@@ -126,16 +126,16 @@ public class Authenticator implements AuthenticatorInterface{
 
 		}
 		catch (SQLException ex) {
-		ex.printStackTrace();
-	} finally {
-		try {
-			// Step 5: Close the Statement and Connection
-			if (stmt != null) stmt.close();
-			if (conn != null) conn.close();
-		} catch (SQLException ex) {
 			ex.printStackTrace();
+		} finally {
+			try {
+				// Step 5: Close the Statement and Connection
+				if (stmt != null) stmt.close();
+				if (conn != null) conn.close();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
 		}
-	}
 		return null;
 	}
 
@@ -160,13 +160,13 @@ public class Authenticator implements AuthenticatorInterface{
 				throw new UndefinedAccountException();
 			}
 			else
-			if(pwd1.equals(pwd2)){
-				// Step 3: Execute a SQL SELECT query
-				sqlStr = "UPDATE logins set password = '" + pwd1+ "' WHERE username = '" + name + "';";
-				stmt.executeUpdate(sqlStr);
-			}
-			else
-				throw new PasswordsDontMatchException();
+				if(pwd1.equals(pwd2)){
+					// Step 3: Execute a SQL SELECT query
+					sqlStr = "UPDATE logins set password = '" + pwd1+ "' WHERE username = '" + name + "';";
+					stmt.executeUpdate(sqlStr);
+				}
+				else
+					throw new PasswordsDontMatchException();
 		}catch (SQLException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -231,7 +231,48 @@ public class Authenticator implements AuthenticatorInterface{
 
 	@Override
 	public void logout(Account a) {
-		// TODO Auto-generated method stub
+		return;
+	}
+
+	@Override
+	public String getRole (String username) throws UndefinedAccountException{
+		Connection conn = null;
+		Statement stmt = null;
+		username = username.toLowerCase();
+		try {
+			// Step 1: Create a database "Connection" object
+			// For SqLite3
+			conn = connectDB();
+
+			// Step 2: Create a "Statement" object inside the "Connection"
+			stmt = conn.createStatement();
+
+			// Step 3: Execute a SQL SELECT query
+			String sqlStr = "SELECT role FROM roles WHERE username = "
+					+ "'" + username + "';";
+
+			ResultSet rset = stmt.executeQuery(sqlStr); // Send the query to the server
+			if(rset.isClosed()){
+				throw new UndefinedAccountException();
+			}else{
+				// Step 4: Process the query result
+				String role = rset.getString("role");
+
+				return role;
+			}
+		}catch (SQLException ex) {
+			ex.printStackTrace();
+		} finally {
+			try {
+				// Step 5: Close the Statement and Connection
+				if (stmt != null) stmt.close();
+				if (conn != null) conn.close();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		}
+
+		return null;
 	}
 
 	/**

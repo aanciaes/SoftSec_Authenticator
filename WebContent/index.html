@@ -2,39 +2,56 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Login Form</title>
+<title>Home</title>
 </head>
 <body>
 	<div class="container">
 		<div class="row">
 			<div class="span12">
-				<form class="form-horizontal" id="login"
-					action='https://localhost:8443/SoftSec_Authenticator/login'
+				<form class="form-horizontal" id="createUser"
+					action='https://localhost:8443/SoftSec_Authenticator/createUser.html'
 					method="POST">
 					<fieldset>
-						<div id="legend">
-							<legend class="">Login</legend>
-						</div>
-						<div class="control-group">
-							<!-- Username -->
-							<label class="control-label" for="username">Username</label>
-							<div class="controls">
-								<input type="text" id="username" name="username"
-									placeholder="username" class="input-xlarge" required>
-							</div>
-						</div>
-						<div class="control-group">
-							<!-- Password-->
-							<label class="control-label" for="password">Password</label>
-							<div class="controls">
-								<input type="password" id="password" name="password"
-									placeholder="password" class="input-xlarge" required>
-							</div>
-						</div>
 						<div class="control-group">
 							<!-- Button -->
 							<div class="controls">
-								<button class="btn btn-success">Login</button>
+								<button class="btn btn-success">CreateUser</button>
+							</div>
+						</div>
+					</fieldset>
+				</form>
+				<form class="form-horizontal" id="deletUser"
+					action='https://localhost:8443/SoftSec_Authenticator/deleteuser.html'
+					method="POST">
+					<fieldset>
+						<div class="control-group">
+							<!-- Button -->
+							<div class="controls">
+								<button class="btn btn-success">Delete User</button>
+							</div>
+						</div>
+					</fieldset>
+				</form>
+				<form class="form-horizontal" id="changePwd"
+					action='https://localhost:8443/SoftSec_Authenticator/changepwd.html'
+					method="POST">
+					<fieldset>
+						<div class="control-group">
+							<!-- Button -->
+							<div class="controls">
+								<button class="btn btn-success">Change Password</button>
+							</div>
+						</div>
+					</fieldset>
+					</form>
+				<form class="form-horizontal" id="logout"
+					action='https://localhost:8443/SoftSec_Authenticator/logout'
+					method="POST">
+					<fieldset>
+						<div class="control-group">
+							<!-- Button -->
+							<div class="controls">
+								<button class="btn btn-success">Logout</button>
 							</div>
 						</div>
 					</fieldset>
